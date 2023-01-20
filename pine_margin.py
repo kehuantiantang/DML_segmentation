@@ -298,10 +298,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--img_extension', default='tif', type=str, help='image extension')
 
-    base = '/dataset/khtt/dataset/pine2022/elcom/7.evaluations'
 
-    train_json = osp.join(base, 'unet_deploy_CONTOUR_V3_20221122_145813_R12345_25000_Tag_70+7000_20230120_152443')
-    test_json = osp.join(base, 'unet_deploy_CONTOUR_V3_20221122_145813_R12345_25000_Tag_seg_30_20230120_152454')
 
     base = '/dataset/khtt/dataset/pine2022/elcom/2.labled'
     train_img = osp.join(base, 'CONTOUR_V3_20221122_145813_R12345_25000_Tag_70+7000')
@@ -311,11 +308,14 @@ if __name__ == '__main__':
     parser.add_argument('--train_image_root', default=train_img, type=str)
     parser.add_argument('--val_image_root', default=test_img, type=str)
 
-
+    base = '/dataset/khtt/dataset/pine2022/elcom/7.evaluations'
+    train_json = osp.join(base, 'unet_deploy_CONTOUR_V3_20221122_145813_R12345_25000_Tag_70+7000_20230120_152443')
+    test_json = osp.join(base, 'unet_deploy_CONTOUR_V3_20221122_145813_R12345_25000_Tag_seg_30_20230120_152454')
     parser.add_argument('--train_json_path', default=train_json, type=str)
     parser.add_argument('--val_json_path', default=test_json, type=str)
 
-    parser.add_argument('--tp_fp_threshold', default=0.5, type=float)
+
+    parser.add_argument('--tp_fp_threshold', default=0.5, type=float, help='threshold for filter tp and fp')
 
 
     # hyper-parameter
@@ -330,23 +330,24 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--checkpoint', default="./outputs/test", type=str,
                         metavar='PATH',
                         help='path to save checkpoint (default: checkpoint)')
-
-
-
     parser.add_argument('--resume', default=None, help='path to latest checkpoint (default: none)')
+
+
+
     parser.add_argument('--pretrain', default=True, action='store_true', help='Using pretrain model or not')
     parser.add_argument('--nb_classes', default=2, type=int, metavar='W', help='number of '
                                                                                'classes')
     parser.add_argument('--feature_dim', default=256, type=int, metavar='W', help='number of classes')
     parser.add_argument('--in_channels', default=3, type=int, metavar='W', help='number of input channel')
     parser.add_argument('--embedder_layers', default=[256], nargs = '+', help='number of embedder-layers')
-    parser.add_argument('--random_enlarge', default=[0, 0], nargs = '+')
+    parser.add_argument('--random_enlarge', default=[0, 0], nargs = '+', help='increase the bbox size to obtain more '
+                                                                              'background information')
 
     parser.add_argument('--enlarge_inVal', action='store_false')
 
 
 
-    parser.add_argument('--margin', type=float, default=0.001)
+    parser.add_argument('--margin', type=float, default=0.001,help = 'Triple loss margin')
     parser.add_argument('--comment', type=str, default='_tp')
 
     parser.add_argument('--save_interval', default=100, type=int, metavar='W', help='number of save interval')
